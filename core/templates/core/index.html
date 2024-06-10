@@ -46,8 +46,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="" class="brand-link" id="brand">
-      <span class="brand-text nav-icon fas fa-cogs elevation-2" style="margin: 0 .3rem 0 .8rem;"></span>
-      <span class="brand-text font-weight-light"><small><b>SDN</b> 智能防火墙管理系统</small></span>
+      <span class="brand-text nav-icon fas fa-shield-alt" style="margin: 0 .3rem 0 .8rem;"></span>
+      <span class="brand-text font-weight-light"><small><b>Archon</b> The Ether Escort</small></span>
     </a>
 
     <!-- Sidebar -->
@@ -88,7 +88,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
           </li>
           <li class="nav-item has-treeview">
             <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-shield-alt"></i>
+              <i class="nav-icon fas fa-calendar-minus"></i>
               <p>
                 规则管理
                 <i class="right fas fa-angle-left"></i>
@@ -122,6 +122,22 @@ scratch. This page gets rid of all links and provides the needed markup only.
               <i class="nav-icon fas fa-th-list"></i>
               <p>
                 节点状态
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link dyn-url" id="delay">
+              <i class="nav-icon fas fa-clock "></i>
+              <p>
+                网络时延
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link dyn-url" id="topo">
+              <i class="nav-icon fas fa-tree "></i>
+              <p>
+                网络拓扑
               </p>
             </a>
           </li>
@@ -246,45 +262,52 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 </p>
 
                 <div class="progress-group">
-                  Fuzzers
+                  Bruteforce DNS
                   <span class="float-right"><b>{{ threat_type_info.0.0 }}</b>/{{ threat_info }}</span>
                   <div class="progress progress-sm">
                     <div class="progress-bar bg-danger" style="width: {{ threat_type_info.0.1 }}%"></div>
                   </div>
                 </div><!-- /.progress-group -->
                 <div class="progress-group">
-                  DoS
+                  DoS ACK
                   <span class="float-right"><b>{{ threat_type_info.1.0 }}</b>/{{ threat_info }}</span>
                   <div class="progress progress-sm">
                     <div class="progress-bar bg-primary" style="width: {{ threat_type_info.1.1 }}%"></div>
                   </div>
                 </div><!-- /.progress-group -->
                 <div class="progress-group">
-                  Exploits
+                  DoS FIN
                   <span class="float-right"><b>{{ threat_type_info.2.0 }}</b>/{{ threat_info }}</span>
                   <div class="progress progress-sm">
                     <div class="progress-bar bg-success" style="width: {{ threat_type_info.2.1 }}%"></div>
                   </div>
                 </div><!-- /.progress-group -->
                 <div class="progress-group">
-                  Generic
+                  DoS HTTP
                   <span class="float-right"><b>{{ threat_type_info.3.0 }}</b>/{{ threat_info }}</span>
                   <div class="progress progress-sm">
                     <div class="progress-bar bg-orange" style="width: {{ threat_type_info.3.1 }}%"></div>
                   </div>
                 </div><!-- /.progress-group -->
                 <div class="progress-group">
-                  Reconnaissance
+                  DoS SYN
                   <span class="float-right"><b>{{ threat_type_info.4.0 }}</b>/{{ threat_info }}</span>
                   <div class="progress progress-sm">
                     <div class="progress-bar bg-indigo" style="width: {{ threat_type_info.4.1 }}%"></div>
                   </div>
                 </div><!-- /.progress-group -->
                 <div class="progress-group">
-                  Shellcode
+                  DoS UDP
                   <span class="float-right"><b>{{ threat_type_info.5.0 }}</b>/{{ threat_info }}</span>
                   <div class="progress progress-sm">
                     <div class="progress-bar bg-warning" style="width: {{ threat_type_info.5.1 }}%"></div>
+                  </div>
+                </div><!-- /.progress-group -->
+                <div class="progress-group">
+                  Mirai DDoS DNS
+                  <span class="float-right"><b>{{ threat_type_info.6.0 }}</b>/{{ threat_info }}</span>
+                  <div class="progress progress-sm">
+                    <div class="progress-bar bg-secondary" style="width: {{ threat_type_info.6.1 }}%"></div>
                   </div>
                 </div><!-- /.progress-group -->
               </div><!-- /.card-body -->

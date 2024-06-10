@@ -42,7 +42,7 @@ def indexContext():
 
     percents = []
     for threat in threats:
-        if threat['type'] != "Normal":
+        if threat['type'] != "BENIGN":
             percents.append((threat['count'], threat['count'] / total * 100 if total else 0))
     context['threat_type_info'] = percents
 
@@ -189,6 +189,17 @@ def systemTestContext(request):
     context = sidebarContext(request)
     return context
 
+def topoContext(request):
+    return sidebarContext(request)
+
+def delayContext(request):
+    context = sidebarContext(request)
+
+    ret = requests.get('http://localhost:8080/')
+    context['delay'] = ret.json()
+
+    return context
+
 def index(request):
     return render(request, 'core/index.html', indexContext())
 
@@ -215,6 +226,12 @@ def nodeState(request):
 
 def systemTest(request):
     return render(request, 'core/system_test.html', systemTestContext(request))
+
+def topo(request):
+    return render(request, 'core/topo.html', topoContext(request))
+
+def delay(request):
+    return render(request, 'core/delay.html', delayContext(request))
 
 from collections import defaultdict
 def group(logs):
@@ -284,8 +301,11 @@ def statistic():
     labels = [pkt['label'] for pkt in pkts]
     counter = Counter(labels)
 
-    colors = ["#00a65a", "#dc3545", "#dc3545", "#dc3545", "#dc3545", "#dc3545", "#dc3545"]
-    for t in ['Normal', 'Fuzzers', 'DoS', 'Exploits', 'Generic', 'Reconnaissance', 'Shellcode']:
+    colors = ["#00a65a", "#dc3545", "#dc3545", "#dc3545", "#dc3545", "#dc3545", "#dc3545", "#dc3545"]
+    # for t in ["BENIGN", "DrDoS_LDAP", "DrDoS_MSSQL", "DrDoS_NetBIOS",
+    #      "DrDoS_UDP", "Syn", "Portmap", "UDP-lag"]:
+    for t in ["BENIGN", "Bruteforce DNS", "DoS ACK", "DoS FIN",
+         "DoS HTTP", "DoS SYN", "DoS UDP", "Mirai DDoS DNS"]:
         if t in counter.keys():
             threat = {"type":t, "count":counter[t], "percent":format(counter[t] / len(labels) *100, ".1f"), "color":colors.pop(0)}
         else:
@@ -300,10 +320,10 @@ def switches():
 
     switches = {}
     try:
-        url = "http://127.0.0.1:8080/stats/switches"
+        url = "http://localhost:8080/stats/switches"
         switch_ids = json.loads(http.request("GET", url).data.decode('utf-8'))
 
-        url = "http://127.0.0.1:8080/stats/flow/"
+        url = "http://localhost:8080/stats/flow/"
         for sid in switch_ids:
             switches[sid] = json.loads(http.request("GET", url + str(sid)).data.decode('utf-8'))[str(sid)]
 
@@ -344,3 +364,26 @@ def reset(request):
     subprocess.run(SHELL_RESET, shell=True)
     start(request)
     return HttpResponse("")
+
+
+import requests
+from django.http import JsonResponse
+
+def get_sw_topo(req):
+    ret = requests.get('http://localhost:8080/v1.0/topology/switches')
+    return JsonResponse(ret.json(), safe=False)
+
+def get_l_topo(req):
+    ret = requests.get('http://localhost:8080/v1.0/topology/links')
+    return JsonResponse(ret.json(), safe=False)
+
+def get_svg(req):
+    return render(req, 'core/router.svg')
+
+def get_flow(req, flow_id):
+    ret = requests.get('http://localhost:8080/stats/flow/' + flow_id)
+    return JsonResponse(ret.json(), safe=False)
+
+def get_monitor(req):
+    ret = requests.get('http://localhost:8080/')
+    return JsonResponse(ret.json(), safe=False)

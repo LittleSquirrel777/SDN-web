@@ -18,4 +18,15 @@ urlpatterns = [
 
     path('test/<int:test_id>/', views.test),
     path('reset/', views.reset),
+    path('topo/', views.topo),
+
+    path('v1.0/topology/switches', views.get_sw_topo),
+    path('v1.0/topology/links', views.get_l_topo),
+
+    path('topo/router.svg', views.get_svg),
+
+    path('stats/flow/<str:flow_id>', views.get_flow),
+    path('monitor/', views.get_monitor),
+    path('delay', views.delay),
+    
 ]
